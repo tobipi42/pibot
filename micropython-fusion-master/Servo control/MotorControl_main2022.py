@@ -43,6 +43,9 @@ def setMotorPWM(channel,servo_DutyCycle):
     return
 
 def setSteering(x):
+    print('set high power')
+    setMotorPWM(enA,0.9)
+    setMotorPWM(enB,0.9)
     if x=='r':
         print('go right')
         setMotorPWM(in1,1)
@@ -57,9 +60,19 @@ def setSteering(x):
         setMotorPWM(in3,0)
         setMotorPWM(in4,1)
         x='z'
+    elif x=='s':
+        print("stop")
+        setMotorPWM(in1,0)
+        setMotorPWM(in2,0)
+        setMotorPWM(in3,0)
+        setMotorPWM(in4,0)
+        x='z'
     elif x=='e':
         pwm.set_pwm(enA, 0, 0)
         pwm.set_pwm(enB, 0, 0)
+    print('set med power')
+    setMotorPWM(enA,0.6)
+    setMotorPWM(enB,0.6)
     return x
 
 

@@ -22,6 +22,7 @@ x_current = 0
 y_current = 0
 
 RUNBOOL = True
+ScanCounter = 500
 
 # MOTOR Control
 try:
@@ -42,7 +43,7 @@ try:
             time.sleep(abs(yawAngleDeg - -90)/50)
             
             for yawAngleDeg in range(-90, 90+1, dYawSweep):
-                sweepsleep = dYawSweep /50
+                sweepsleep = dYawSweep /10
                 setServoYaw(yawAngleDeg)
                 time.sleep(sweepsleep)
 
@@ -60,13 +61,14 @@ try:
                 y_map.append(y_new)
 
                 LoopCounter = LoopCounter +1
-                if LoopCounter % 100:
-                    output_data = np.vstack((x_map,y_map,h_map))
-                    np.savetxt('spatial_data_field_01.csv',output_data,fmt='%.1d',delimiter=',')
+               # if LoopCounter % 100:
+            output_data = np.vstack((x_map,y_map,h_map))
+            np.savetxt(f'spatial_data_field_{ScanCounter}.csv',output_data,fmt='%.1d',delimiter=',')
+            ScanCounter = ScanCounter + 1
              
             print('Looking forward')
             setServoYaw(0)
-            time.sleep(abs(yawAngleDeg)/50)
+            time.sleep(abs(yawAngleDeg)/10)
             yawAngleDeg = 0;
             
         
@@ -88,6 +90,26 @@ try:
             
             x_current = x_current + 40 # WE shall move 40 cm
             setDirection('s') # 'f','s','b'
+            
+            #Look left and right
+            print('Lets look around')
+            time.sleep(1.0)
+            setServoYaw(-90)
+            time.sleep(1.0)
+            setServoYaw(90)
+            time.sleep(2.0)
+            setServoYaw(0)
+            time.sleep(1.0)
+            
+            setSteering('l')
+            time.sleep(3.0)
+            setSteering('s')
+            time.sleep(1.0)
+            setSteering('r')
+            time.sleep(3.0)
+            setSteering('s')
+            x='z'
+            
 #             setSteering(x) # 'l','r',
 #             setSpeed(x) #'low','med','high'
         

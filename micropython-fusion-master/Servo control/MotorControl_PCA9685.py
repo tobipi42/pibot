@@ -12,12 +12,12 @@ servo_min = 0  # Min pulse length out of 4096
 servo_max = 4095  # Max pulse length out of 4096
 servo_freq = 50
 
-in3 = 9
-in4 = 10
+in3 = 9 # left side
+in4 = 10 # left side
 enB = 11
 
-in1 = 14
-in2 = 13
+in1 = 14 # right side
+in2 = 13 # right side
 enA = 15
 
 pwm.set_pwm_freq(servo_freq)
@@ -42,21 +42,27 @@ def setMotorPWM(channel,servo_DutyCycle):
     pwm.set_pwm(channel, 0, servo_pulse)
     return
 
-
 def setSteering(x):
-    if x=='l':
-        print('go left')
+    if x=='r':
+        print('go right')
         setMotorPWM(in1,1)
         setMotorPWM(in2,0)
         setMotorPWM(in3,1)
         setMotorPWM(in4,0)
         x='z'
-    elif x=='r':
-        print('go right')
+    elif x=='l':
+        print('go left')
         setMotorPWM(in1,0)
         setMotorPWM(in2,1)
         setMotorPWM(in3,0)
         setMotorPWM(in4,1)
+        x='z'
+    elif x=='s':
+        print("stop")
+        setMotorPWM(in1,0)
+        setMotorPWM(in2,0)
+        setMotorPWM(in3,0)
+        setMotorPWM(in4,0)
         x='z'
     elif x=='e':
         pwm.set_pwm(enA, 0, 0)
@@ -124,7 +130,6 @@ def setSpeed(x):
 while(1):
     
     x=input()
-    
     setSteering(x)
     setDirection(x)
     setSpeed(x)
